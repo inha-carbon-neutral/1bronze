@@ -14,7 +14,7 @@ class TodolistApp extends StatelessWidget {
         primaryColor: const Color(0xFFFCFCFC),
         disabledColor: const Color(0xFFE94141),
       ),
-      home: const HomeScreen(),
+      home: HomeScreen(),
     );
   }
 }

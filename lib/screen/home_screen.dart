@@ -5,42 +5,36 @@ import 'package:flutter_todolist/model/todo.dart';
 import 'package:flutter_todolist/widget/todo_widget.dart';
 
 class HomeScreen extends StatefulWidget {
-  const HomeScreen({super.key});
+  HomeScreen({super.key});
+
+  final allTag = const TagWidget(title: 'All', width: 3);
+  final completedTag = const TagWidget(title: 'Completed', width: 5);
+  final incompletedTag = const TagWidget(title: 'Incompleted', width: 5);
+  final importantTag = const TagWidget(title: 'Important', width: 5);
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  Todo todo1 = Todo('test1', false, false);
-  Todo todo2 = Todo('test2', false, false);
-  Todo todo3 = Todo('test3', false, false);
-  Todo todo4 = Todo('test4', false, false);
-  Todo todo5 = Todo('test5', false, false);
-  Todo todo6 = Todo('test6', false, false);
-  Todo todo7 = Todo('test7', false, false);
-  Todo todo8 = Todo('test8', false, false);
   List<Todo> todolist = [];
+  late Map<String, TagWidget> tagList;
+  late TagWidget selectedTag;
 
   @override
   void initState() {
-    todolist.add(todo1);
-    todolist.add(todo2);
-    todolist.add(todo3);
-    todolist.add(todo4);
-    todolist.add(todo5);
-    todolist.add(todo6);
-    todolist.add(todo7);
-    todolist.add(todo8);
-    todolist.add(todo1);
-    todolist.add(todo2);
-    todolist.add(todo3);
-    todolist.add(todo4);
-    todolist.add(todo5);
-    todolist.add(todo6);
-    todolist.add(todo7);
-    todolist.add(todo8);
+    tagList = getTagList();
+    selectedTag = tagList['All']!;
     super.initState();
+  }
+
+  Map<String, TagWidget> getTagList() {
+    Map<String, TagWidget> tagList = {};
+    tagList['All'] = widget.allTag;
+    tagList['Completed'] = widget.completedTag;
+    tagList['Incompleted'] = widget.incompletedTag;
+    tagList['Important'] = widget.importantTag;
+    return tagList;
   }
 
   @override
@@ -58,7 +52,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   flex: 9,
                     child: createTodolist(),
                 ),
-                Flexible(
+                const Flexible(
                   flex: 1,
                     child: AddTodoWidget(),
                 ),
@@ -71,14 +65,13 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Row createTags() {
-    return const Row(
-          children: [
-            TagWidget(title: 'All', width: 3,),
-            TagWidget(title: 'Completed', width: 5,),
-            TagWidget(title: 'Incompleted', width: 5,),
-            TagWidget(title: 'Important', width: 5,),
-          ],
+    return Row(
+          children: tagList.values.toList(),
         );
+  }
+
+  void selectTag(TagWidget tagWidget) {
+
   }
 
   ListView createTodolist() {

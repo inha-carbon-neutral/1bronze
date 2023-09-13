@@ -17,6 +17,7 @@ class TagWidget extends StatefulWidget {
 class _TagWidgetState extends State<TagWidget> {
   late int width;
   late String title;
+  bool isSelected = false;
 
   @override
   void initState() {
