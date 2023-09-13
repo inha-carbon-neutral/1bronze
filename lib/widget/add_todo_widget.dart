@@ -25,6 +25,9 @@ class _AddTodoWidgetState extends State<AddTodoWidget> {
                 width: 150,
                 height: 50,
                 child: TextField(
+                  style: TextStyle(
+                    color: Theme.of(context).primaryColor,
+                  ),
                   decoration: InputDecoration(
                     fillColor: Theme.of(context).highlightColor.withOpacity(0.15),
                     filled: true,
