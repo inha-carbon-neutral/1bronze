@@ -48,8 +48,8 @@ class _TodoWidgetState extends State<TodoWidget> {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Theme(
-            data:
-            Theme.of(context).copyWith(unselectedWidgetColor: Theme.of(context).highlightColor),
+            data: Theme.of(context).copyWith(
+                unselectedWidgetColor: Theme.of(context).highlightColor),
             child: SizedBox(
               width: 24,
               height: 24,
@@ -58,8 +58,12 @@ class _TodoWidgetState extends State<TodoWidget> {
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(5),
                 ),
-                value: false,
-                onChanged: (value){},
+                value: isCompleted,
+                onChanged: (value) {
+                  setState(() {
+                    isCompleted = !isCompleted;
+                  });
+                },
               ),
             ),
           ),
@@ -68,7 +72,8 @@ class _TodoWidgetState extends State<TodoWidget> {
               padding: const EdgeInsets.symmetric(
                 horizontal: 20,
               ),
-              child: Text(work,
+              child: Text(
+                work,
                 textAlign: TextAlign.start,
                 style: TextStyle(
                   fontWeight: FontWeight.w600,
@@ -78,8 +83,16 @@ class _TodoWidgetState extends State<TodoWidget> {
               ),
             ),
           ),
-          Icon(Icons.star_border_rounded,
-            color: Theme.of(context).highlightColor,
+          GestureDetector(
+            onTap: () {
+              setState(() {
+                isImportant = !isImportant;
+              });
+            },
+            child: Icon(
+              isImportant ? Icons.star_rounded : Icons.star_border_rounded,
+              color: Theme.of(context).highlightColor,
+            ),
           ),
         ],
       ),

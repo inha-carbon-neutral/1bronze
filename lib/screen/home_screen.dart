@@ -19,6 +19,7 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
     super.initState();
+    todolist.add(Todo('work1', false, false));
     tagsProvider = Provider.of<TagsProvider>(context, listen: false);
   }
 
