@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_todolist/provider/tags_provider.dart';
+import 'package:flutter_todolist/model/tag.dart';
+import 'package:flutter_todolist/provider/tag_provider.dart';
 import 'package:flutter_todolist/widget/add_todo_widget.dart';
 import 'package:flutter_todolist/model/todo.dart';
 import 'package:flutter_todolist/widget/todo_widget.dart';
@@ -14,13 +15,13 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   List<Todo> todolist = [];
-  late TagsProvider tagsProvider;
+  late TagProvider tagProvider;
 
   @override
   void initState() {
     super.initState();
     todolist.add(Todo('work1', false, false));
-    tagsProvider = Provider.of<TagsProvider>(context, listen: false);
+    tagProvider = Provider.of<TagProvider>(context, listen: false);
   }
 
   @override
@@ -52,7 +53,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   Row createTags() {
     return Row(
-      children: tagsProvider.tagList.values.map((tag) {
+      children: tagProvider.tagList.values.map((tag) {
         return Flexible(
           flex: tag.width,
           child: tag,

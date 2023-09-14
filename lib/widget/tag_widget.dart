@@ -1,25 +1,27 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_todolist/provider/tags_provider.dart';
+import 'package:flutter_todolist/model/tag.dart';
+import 'package:flutter_todolist/provider/tag_provider.dart';
+import 'package:flutter_todolist/util/util.dart';
 import 'package:provider/provider.dart';
 
 class TagWidget extends StatelessWidget {
   final int width;
-  final String title;
+  final Tag tag;
 
   const TagWidget({
     super.key,
     required this.width,
-    required this.title,
+    required this.tag,
   });
 
   @override
   Widget build(BuildContext context) {
-    final tagsProvider = Provider.of<TagsProvider>(context);
-    final isSelected = title == tagsProvider.selectedTag;
+    final tagProvider = Provider.of<TagProvider>(context);
+    final isSelected = tag == tagProvider.selectedTag;
 
     return GestureDetector(
       onTap: () {
-        tagsProvider.updateState(title);
+        tagProvider.updateState(tag);
       },
       child: Container(
         alignment: Alignment.center,
@@ -30,7 +32,7 @@ class TagWidget extends StatelessWidget {
               height: 10,
             ),
             Text(
-              title,
+              Util.capitalizeFirstLetter(tag.name),
               style: TextStyle(
                 fontWeight: FontWeight.w600,
                 color: isSelected
