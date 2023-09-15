@@ -19,7 +19,7 @@ class TodoWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
 
-    final todoProvider = Provider.of<TodoProvider>(context);
+    final todoProvider = context.watch<TodoProvider>();
 
     return Container(
       height: 80,

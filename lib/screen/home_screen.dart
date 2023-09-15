@@ -42,7 +42,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           flex: 9,
                           child: createTodolist(filteredTodolist),
                         ),
-                        const Flexible(
+                        Flexible(
                           flex: 1,
                           child: AddTodoWidget(),
                         ),

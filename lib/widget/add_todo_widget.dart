@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_todolist/provider/todo_provider.dart';
+import 'package:provider/provider.dart';
 
-class AddTodoWidget extends StatefulWidget {
-  const AddTodoWidget({super.key});
+class AddTodoWidget extends StatelessWidget {
+  AddTodoWidget({super.key});
 
-  @override
-  State<AddTodoWidget> createState() => _AddTodoWidgetState();
-}
+  final TextEditingController textEditingController = TextEditingController();
 
-class _AddTodoWidgetState extends State<AddTodoWidget> {
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -25,11 +24,13 @@ class _AddTodoWidgetState extends State<AddTodoWidget> {
                 width: 150,
                 height: 50,
                 child: TextField(
+                  controller: textEditingController,
                   style: TextStyle(
                     color: Theme.of(context).primaryColor,
                   ),
                   decoration: InputDecoration(
-                    fillColor: Theme.of(context).highlightColor.withOpacity(0.15),
+                    fillColor:
+                        Theme.of(context).highlightColor.withOpacity(0.15),
                     filled: true,
                     hintText: 'Add Task...',
                     hintStyle: TextStyle(
@@ -58,9 +59,20 @@ class _AddTodoWidgetState extends State<AddTodoWidget> {
               ),
               Transform.scale(
                 scale: 1.8,
-                child: Icon(
-                  Icons.add_circle_rounded,
-                  color: Theme.of(context).highlightColor,
+                child: IconButton(
+                  icon: Icon(
+                    Icons.add_circle_rounded,
+                    color: Theme.of(context).highlightColor,
+                  ),
+                  onPressed: () {
+                    String work = textEditingController.text;
+                    if (work.isNotEmpty) {
+                      var todoProvider = context.read<TodoProvider>();
+                      todoProvider.addTodo(work);
+                      todoProvider.notifyListeners();
+                      textEditingController.clear();
+                    }
+                  },
                 ),
               ),
             ],

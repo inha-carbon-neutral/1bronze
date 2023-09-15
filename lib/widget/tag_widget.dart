@@ -16,7 +16,7 @@ class TagWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final tagProvider = Provider.of<TagProvider>(context, listen: true);
+    final tagProvider = context.watch<TagProvider>();
     final isSelected = (tag == tagProvider.selectedTag);
 
     return GestureDetector(
