@@ -1,27 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_todolist/model/tag.dart';
 import 'package:flutter_todolist/provider/tag_provider.dart';
+import 'package:flutter_todolist/provider/todo_provider.dart';
 import 'package:flutter_todolist/widget/add_todo_widget.dart';
 import 'package:flutter_todolist/model/todo.dart';
 import 'package:flutter_todolist/widget/todo_widget.dart';
 import 'package:provider/provider.dart';
 
 class HomeScreen extends StatefulWidget {
-  HomeScreen({super.key});
+  const HomeScreen({super.key});
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  List<Todo> todolist = [];
-  late TagProvider tagProvider;
-
   @override
   void initState() {
     super.initState();
-    todolist.add(Todo('work1', false, false));
-    tagProvider = Provider.of<TagProvider>(context, listen: false);
   }
 
   @override
@@ -29,29 +25,41 @@ class _HomeScreenState extends State<HomeScreen> {
     return Scaffold(
       backgroundColor: Theme.of(context).backgroundColor,
       appBar: createAppBar(),
-      body: Column(
-        children: [
-          createTags(),
-          Expanded(
-            child: Column(
-              children: [
-                Flexible(
-                  flex: 9,
-                  child: createTodolist(),
-                ),
-                const Flexible(
-                  flex: 1,
-                  child: AddTodoWidget(),
-                ),
-              ],
-            ),
-          ),
-        ],
+      body: Consumer<TagProvider>(
+        builder: (context, tagProvider, child) {
+          return Consumer<TodoProvider>(
+            builder: (context, todoProvider, child) {
+              final filteredTodolist = todoProvider.todolist.where((todo) {
+                return checkTagAndTodoStatus(tagProvider.selectedTag, todo);
+              }).toList();
+              return Column(
+                children: [
+                  createTags(tagProvider),
+                  Expanded(
+                    child: Column(
+                      children: [
+                        Flexible(
+                          flex: 9,
+                          child: createTodolist(filteredTodolist),
+                        ),
+                        const Flexible(
+                          flex: 1,
+                          child: AddTodoWidget(),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              );
+            },
+          );
+        },
       ),
     );
   }
 
-  Row createTags() {
+  Row createTags(TagProvider tagProvider) {
+    print('createTags 호출됨!');
     return Row(
       children: tagProvider.tagList.values.map((tag) {
         return Flexible(
@@ -62,13 +70,15 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  ListView createTodolist() {
+  ListView createTodolist(List<Todo> filteredTodolist) {
+    print('createTodolist 호출됨!');
     return ListView.separated(
       padding: const EdgeInsets.symmetric(vertical: 40),
       scrollDirection: Axis.vertical,
       itemBuilder: (context, index) {
-        var todo = todolist[index];
+        Todo todo = filteredTodolist[index];
         return TodoWidget(
+          index: todo.index,
           work: todo.work,
           isCompleted: todo.isCompleted,
           isImportant: todo.isImportant,
@@ -77,11 +87,26 @@ class _HomeScreenState extends State<HomeScreen> {
       separatorBuilder: (context, index) => const SizedBox(
         height: 20,
       ),
-      itemCount: todolist.length,
+      itemCount: filteredTodolist.length,
     );
   }
 
+  bool checkTagAndTodoStatus(Tag tag, Todo todo) {
+    if (tag == Tag.all) {
+      return true;
+    } else if (tag == Tag.incompleted && !todo.isCompleted) {
+      return true;
+    } else if (tag == Tag.completed && todo.isCompleted) {
+      return true;
+    } else if (tag == Tag.important && todo.isImportant) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
   AppBar createAppBar() {
+    print('createappBar 호출됨!');
     return AppBar(
       centerTitle: false,
       foregroundColor: Theme.of(context).primaryColor,

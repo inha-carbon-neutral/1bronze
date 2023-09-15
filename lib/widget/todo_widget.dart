@@ -1,36 +1,26 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_todolist/provider/todo_provider.dart';
+import 'package:provider/provider.dart';
 
-class TodoWidget extends StatefulWidget {
+class TodoWidget extends StatelessWidget {
+  final int index;
   final String work;
   final bool isCompleted;
   final bool isImportant;
 
   const TodoWidget({
     super.key,
+    required this.index,
     required this.work,
     required this.isCompleted,
     required this.isImportant,
   });
 
   @override
-  State<TodoWidget> createState() => _TodoWidgetState();
-}
-
-class _TodoWidgetState extends State<TodoWidget> {
-  late final String work;
-  late bool isCompleted;
-  late bool isImportant;
-
-  @override
-  void initState() {
-    work = widget.work;
-    isCompleted = widget.isCompleted;
-    isImportant = widget.isImportant;
-    super.initState();
-  }
-
-  @override
   Widget build(BuildContext context) {
+
+    final todoProvider = Provider.of<TodoProvider>(context);
+
     return Container(
       height: 80,
       margin: const EdgeInsets.symmetric(
@@ -60,9 +50,8 @@ class _TodoWidgetState extends State<TodoWidget> {
                 ),
                 value: isCompleted,
                 onChanged: (value) {
-                  setState(() {
-                    isCompleted = !isCompleted;
-                  });
+                  print('Tap Detected!');
+                  todoProvider.updateIsCompleted(index);
                 },
               ),
             ),
@@ -85,9 +74,8 @@ class _TodoWidgetState extends State<TodoWidget> {
           ),
           GestureDetector(
             onTap: () {
-              setState(() {
-                isImportant = !isImportant;
-              });
+              print('Tap Detected!');
+              todoProvider.updateIsImportant(index);
             },
             child: Icon(
               isImportant ? Icons.star_rounded : Icons.star_border_rounded,
