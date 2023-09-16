@@ -1,16 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_todolist/provider/tag_provider.dart';
 import 'package:flutter_todolist/provider/todo_provider.dart';
 import 'package:provider/provider.dart';
 
 class TodoWidget extends StatelessWidget {
-  final int index;
+  final int id;
   final String work;
   final bool isCompleted;
   final bool isImportant;
 
   const TodoWidget({
     super.key,
-    required this.index,
+    required this.id,
     required this.work,
     required this.isCompleted,
     required this.isImportant,
@@ -20,6 +21,7 @@ class TodoWidget extends StatelessWidget {
   Widget build(BuildContext context) {
 
     final todoProvider = context.watch<TodoProvider>();
+    final tagProvider = context.watch<TagProvider>();
 
     return Container(
       height: 80,
@@ -51,7 +53,8 @@ class TodoWidget extends StatelessWidget {
                 value: isCompleted,
                 onChanged: (value) {
                   print('Tap Detected!');
-                  todoProvider.updateIsCompleted(index);
+                  todoProvider.updateIsCompleted(id);
+                  tagProvider.refreshState(todoProvider);
                 },
               ),
             ),
@@ -75,7 +78,8 @@ class TodoWidget extends StatelessWidget {
           GestureDetector(
             onTap: () {
               print('Tap Detected!');
-              todoProvider.updateIsImportant(index);
+              todoProvider.updateIsImportant(id);
+              tagProvider.refreshState(todoProvider);
             },
             child: Icon(
               isImportant ? Icons.star_rounded : Icons.star_border_rounded,

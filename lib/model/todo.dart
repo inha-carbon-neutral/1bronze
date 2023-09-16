@@ -1,11 +1,11 @@
 class Todo {
-  final int index;
+  final int id;
   String work;
   bool isCompleted = false;
   bool isImportant = false;
 
   Todo(
-      this.index,
+      this.id,
       this.work,
       this.isCompleted,
       this.isImportant,

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_todolist/model/tag.dart';
 import 'package:flutter_todolist/provider/tag_provider.dart';
 import 'package:flutter_todolist/provider/todo_provider.dart';
 import 'package:flutter_todolist/widget/add_todo_widget.dart';
@@ -15,10 +14,6 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  @override
-  void initState() {
-    super.initState();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -29,9 +24,6 @@ class _HomeScreenState extends State<HomeScreen> {
         builder: (context, tagProvider, child) {
           return Consumer<TodoProvider>(
             builder: (context, todoProvider, child) {
-              final filteredTodolist = todoProvider.todolist.where((todo) {
-                return checkTagAndTodoStatus(tagProvider.selectedTag, todo);
-              }).toList();
               return Column(
                 children: [
                   createTags(tagProvider),
@@ -40,7 +32,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       children: [
                         Flexible(
                           flex: 9,
-                          child: createTodolist(filteredTodolist),
+                          child: createTodolist(todoProvider),
                         ),
                         Flexible(
                           flex: 1,
@@ -70,15 +62,15 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  ListView createTodolist(List<Todo> filteredTodolist) {
+  ListView createTodolist(TodoProvider todoProvider) {
     print('createTodolist 호출됨!');
     return ListView.separated(
       padding: const EdgeInsets.symmetric(vertical: 40),
       scrollDirection: Axis.vertical,
       itemBuilder: (context, index) {
-        Todo todo = filteredTodolist[index];
+        Todo todo = todoProvider.filteredTodolist[index];
         return TodoWidget(
-          index: todo.index,
+          id: todo.id,
           work: todo.work,
           isCompleted: todo.isCompleted,
           isImportant: todo.isImportant,
@@ -87,22 +79,8 @@ class _HomeScreenState extends State<HomeScreen> {
       separatorBuilder: (context, index) => const SizedBox(
         height: 20,
       ),
-      itemCount: filteredTodolist.length,
+      itemCount: todoProvider.filteredTodolist.length,
     );
-  }
-
-  bool checkTagAndTodoStatus(Tag tag, Todo todo) {
-    if (tag == Tag.all) {
-      return true;
-    } else if (tag == Tag.incompleted && !todo.isCompleted) {
-      return true;
-    } else if (tag == Tag.completed && todo.isCompleted) {
-      return true;
-    } else if (tag == Tag.important && todo.isImportant) {
-      return true;
-    } else {
-      return false;
-    }
   }
 
   AppBar createAppBar() {

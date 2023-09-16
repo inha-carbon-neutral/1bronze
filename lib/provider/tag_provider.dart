@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_todolist/model/tag.dart';
+import 'package:flutter_todolist/provider/todo_provider.dart';
 import 'package:flutter_todolist/widget/tag_widget.dart';
 
 class TagProvider extends ChangeNotifier {
@@ -14,8 +15,14 @@ class TagProvider extends ChangeNotifier {
     tagList[Tag.important] = const TagWidget(tag: Tag.important, width: 5);
   }
 
-  void updateState(Tag tag) {
+  void refreshState(TodoProvider todoProvider) {
+    todoProvider.updateFilteredTodolist(selectedTag);
+    notifyListeners();
+  }
+
+  void updateState(Tag tag, TodoProvider todoProvider) {
     selectedTag = tag;
+    todoProvider.updateFilteredTodolist(tag);
     notifyListeners();
   }
 }

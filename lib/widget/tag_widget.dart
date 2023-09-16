@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_todolist/model/tag.dart';
 import 'package:flutter_todolist/provider/tag_provider.dart';
+import 'package:flutter_todolist/provider/todo_provider.dart';
 import 'package:flutter_todolist/util/util.dart';
 import 'package:provider/provider.dart';
 
@@ -17,11 +18,12 @@ class TagWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final tagProvider = context.watch<TagProvider>();
+    final todoProvider = context.watch<TodoProvider>();
     final isSelected = (tag == tagProvider.selectedTag);
 
     return GestureDetector(
       onTap: () {
-        tagProvider.updateState(tag);
+        tagProvider.updateState(tag, todoProvider);
       },
       child: Container(
         alignment: Alignment.center,
