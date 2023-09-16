@@ -4,26 +4,39 @@ import 'package:flutter_todolist/model/tag.dart';
 import 'package:flutter_todolist/model/todo.dart';
 
 class TodoService {
-
   TodoDao todoDao = MemoryTodoDao();
 
-  List<Todo> getTodolist() {
-    return todoDao.getTodolist();
+  List<Todo> getFilteredTodolist(Tag tag) {
+    return _getFilteredTodolist(tag, todoDao.getTodolist());
   }
 
-  List<Todo> getFilteredTodolist(Tag selectedTag) {
-    return todoDao.getFilteredTodolist(selectedTag);
+  List<Todo> updateIsCompleted(Tag tag, int id) {
+    return _getFilteredTodolist(tag, todoDao.updateIsCompleted(id));
   }
 
-  int createTodo(String work) {
-    return todoDao.createTodo(work);
+  List<Todo> updateIsImportant(Tag tag, int id) {
+    return _getFilteredTodolist(tag, todoDao.updateIsImportant(id));
   }
 
-  int updateIsCompleted(int id) {
-    return todoDao.updateIsCompleted(id);
+  List<Todo> createTodo(Tag tag, String work) {
+    return _getFilteredTodolist(tag, todoDao.createTodo(work));
   }
 
-  int updateIsImportant(int id) {
-    return todoDao.updateIsImportant(id);
+  List<Todo> _getFilteredTodolist(Tag tag, List<Todo> todolist) {
+    return todolist.where((todo) => _checkTagAndTodoStatus(tag, todo)).toList();
+  }
+
+  bool _checkTagAndTodoStatus(Tag tag, Todo todo) {
+    if (tag == Tag.all) {
+      return true;
+    } else if (tag == Tag.incompleted && !todo.isCompleted) {
+      return true;
+    } else if (tag == Tag.completed && todo.isCompleted) {
+      return true;
+    } else if (tag == Tag.important && todo.isImportant) {
+      return true;
+    } else {
+      return false;
+    }
   }
 }

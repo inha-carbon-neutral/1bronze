@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_todolist/provider/tag_provider.dart';
 import 'package:flutter_todolist/provider/todo_provider.dart';
 import 'package:provider/provider.dart';
 
@@ -68,10 +67,9 @@ class AddTodoWidget extends StatelessWidget {
                   onPressed: () {
                     String work = textEditingController.text;
                     if (work.isNotEmpty) {
-                      var todoProvider = context.read<TodoProvider>();
-                      var tagProvider = context.read<TagProvider>();
+                      TodoProvider todoProvider = context.read<TodoProvider>();
                       todoProvider.addTodo(work);
-                      tagProvider.refreshState(todoProvider);
+                      todoProvider.notifyListeners();
                       textEditingController.clear();
                     }
                   },
