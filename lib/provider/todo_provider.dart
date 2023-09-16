@@ -13,31 +13,37 @@ class TodoProvider extends ChangeNotifier {
 
   TodoProvider() {
     todoService = TodoService();
-    filteredTodolist = todoService.getFilteredTodolist(selectedTag);
+    filteredTodolist = [];
     tagList[Tag.all] = const TagWidget(tag: Tag.all, width: 3);
     tagList[Tag.completed] = const TagWidget(tag: Tag.completed, width: 5);
     tagList[Tag.incompleted] = const TagWidget(tag: Tag.incompleted, width: 5);
     tagList[Tag.important] = const TagWidget(tag: Tag.important, width: 5);
+    _init();
   }
 
-  void updateTag(Tag tag) {
+  Future<void> _init() async {
+    filteredTodolist = await todoService.getFilteredTodolist(selectedTag);
+    notifyListeners();
+  }
+
+  void updateTag(Tag tag) async {
     selectedTag = tag;
-    filteredTodolist = todoService.getFilteredTodolist(selectedTag);
+    filteredTodolist = await todoService.getFilteredTodolist(selectedTag);
     notifyListeners();
   }
 
-  void updateIsCompleted(int id) {
-    filteredTodolist = todoService.updateIsCompleted(selectedTag, id);
+  void updateIsCompleted(int id) async {
+    filteredTodolist = await todoService.updateIsCompleted(selectedTag, id);
     notifyListeners();
   }
 
-  void updateIsImportant(int id) {
-    filteredTodolist = todoService.updateIsImportant(selectedTag, id);
+  void updateIsImportant(int id) async {
+    filteredTodolist = await todoService.updateIsImportant(selectedTag, id);
     notifyListeners();
   }
 
-  void addTodo(String work) {
-    filteredTodolist = todoService.createTodo(selectedTag, work);
+  void addTodo(String work) async {
+    filteredTodolist = await todoService.createTodo(selectedTag, work);
     notifyListeners();
   }
 }

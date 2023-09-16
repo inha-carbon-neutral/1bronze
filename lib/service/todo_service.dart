@@ -1,25 +1,29 @@
-import 'package:flutter_todolist/dao/memory_todo_dao.dart';
+import 'package:flutter_todolist/dao/json_todo_dao.dart';
 import 'package:flutter_todolist/dao/todo_dao.dart';
 import 'package:flutter_todolist/model/tag.dart';
 import 'package:flutter_todolist/model/todo.dart';
 
 class TodoService {
-  TodoDao todoDao = MemoryTodoDao();
+  TodoDao todoDao = JsonTodoDao();
 
-  List<Todo> getFilteredTodolist(Tag tag) {
-    return _getFilteredTodolist(tag, todoDao.getTodolist());
+  Future<List<Todo>> getFilteredTodolist(Tag tag) async {
+    final todolist = await todoDao.getTodolist();
+    return _getFilteredTodolist(tag, todolist);
   }
 
-  List<Todo> updateIsCompleted(Tag tag, int id) {
-    return _getFilteredTodolist(tag, todoDao.updateIsCompleted(id));
+  Future<List<Todo>> updateIsCompleted(Tag tag, int id) async {
+    final todolist = await todoDao.updateIsCompleted(id);
+    return _getFilteredTodolist(tag, todolist);
   }
 
-  List<Todo> updateIsImportant(Tag tag, int id) {
-    return _getFilteredTodolist(tag, todoDao.updateIsImportant(id));
+  Future<List<Todo>> updateIsImportant(Tag tag, int id) async {
+    final todolist = await todoDao.updateIsImportant(id);
+    return _getFilteredTodolist(tag, todolist);
   }
 
-  List<Todo> createTodo(Tag tag, String work) {
-    return _getFilteredTodolist(tag, todoDao.createTodo(work));
+  Future<List<Todo>> createTodo(Tag tag, String work) async {
+    final todolist = await todoDao.createTodo(work);
+    return _getFilteredTodolist(tag, todolist);
   }
 
   List<Todo> _getFilteredTodolist(Tag tag, List<Todo> todolist) {
