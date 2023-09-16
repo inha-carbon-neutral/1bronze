@@ -22,6 +22,7 @@ class TodoProvider extends ChangeNotifier {
 
   void updateTag(Tag tag) {
     selectedTag = tag;
+    filteredTodolist = todoService.getFilteredTodolist(selectedTag);
     notifyListeners();
   }
 
