@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:flutter_todolist/provider/todo_provider.dart';
+import 'package:flutter_todolist/widget/delete_todo_popup_widget.dart';
+import 'package:flutter_todolist/widget/edit_todo_popup_widget.dart';
 import 'package:provider/provider.dart';
 
 class TodoWidget extends StatelessWidget {
@@ -36,7 +38,9 @@ class TodoWidget extends StatelessWidget {
             children: [
               SlidableAction(
                 flex: 2,
-                onPressed: (context) {},
+                onPressed: (context) {
+                  _editTodo(context, id);
+                },
                 backgroundColor: const Color(0xFF1DAAE9),
                 foregroundColor: Theme.of(context).primaryColor,
                 icon: Icons.edit_rounded,
@@ -44,27 +48,28 @@ class TodoWidget extends StatelessWidget {
               ),
               SlidableAction(
                 flex: 2,
-                onPressed: (context) { _deleteTodo(todoProvider, id); },
+                onPressed: (context) {
+                  _deleteTodo(context, id);
+                },
                 backgroundColor: const Color(0xFFF4493D),
                 foregroundColor: Theme.of(context).primaryColor,
                 icon: Icons.delete_rounded,
                 label: 'Delete',
-                borderRadius: const BorderRadius.horizontal(right: Radius.circular(15)),
+                borderRadius:
+                    const BorderRadius.horizontal(right: Radius.circular(15)),
               ),
             ],
           ),
           child: Container(
             decoration: BoxDecoration(
               color: Theme.of(context).primaryColor.withOpacity(0.1),
-              // borderRadius: BorderRadius.circular(15),
             ),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Theme(
                   data: Theme.of(context).copyWith(
-                      unselectedWidgetColor:
-                          Theme.of(context).highlightColor),
+                      unselectedWidgetColor: Theme.of(context).highlightColor),
                   child: Padding(
                     padding: const EdgeInsets.only(
                       left: 15,
@@ -126,7 +131,23 @@ class TodoWidget extends StatelessWidget {
     );
   }
 
-  void _deleteTodo(TodoProvider todoProvider, int id) {
-    todoProvider.deleteTodo(id);
+  Future<void> _deleteTodo(BuildContext context, int id) {
+    return showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return DeleteTodoPopupWidget(
+          id: id,
+        );
+      },
+    );
+  }
+
+  Future<void> _editTodo(BuildContext context, int id) {
+    return showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return EditTodoPopupWidget(id: id);
+      },
+    );
   }
 }

@@ -25,6 +25,13 @@ class MemoryTodoDao implements TodoDao {
   }
 
   @override
+  List<Todo> updateWork(int id, String work){
+    Todo todo = todolist.where((todo) => todo.id==id).first;
+    todo.updateWork(work);
+    return todolist;
+  }
+
+  @override
   List<Todo> updateIsCompleted(int id){
     Todo todo = todolist.where((todo) => todo.id==id).first;
     todo.updateIsCompleted();

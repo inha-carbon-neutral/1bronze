@@ -13,6 +13,11 @@ class TodoService {
     return _getFilteredTodolist(tag, todolist);
   }
 
+  Future<List<Todo>> updateWork(Tag tag, int id, String work) async {
+    final todolist = await todoDao.updateWork(id, work);
+    return _getFilteredTodolist(tag, todolist);
+  }
+
   Future<List<Todo>> updateIsCompleted(Tag tag, int id) async {
     final todolist = await todoDao.updateIsCompleted(id);
     return _getFilteredTodolist(tag, todolist);

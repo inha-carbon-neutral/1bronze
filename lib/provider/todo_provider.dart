@@ -26,9 +26,18 @@ class TodoProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  Todo getTodo(int id) {
+    return filteredTodolist.where((todo) => todo.id == id).first;
+  }
+
   void updateTag(Tag tag) async {
     selectedTag = tag;
     filteredTodolist = await todoService.getFilteredTodolist(selectedTag);
+    notifyListeners();
+  }
+
+  void updateWork(String work, int id) async {
+    filteredTodolist = await todoService.updateWork(selectedTag, id, work);
     notifyListeners();
   }
 

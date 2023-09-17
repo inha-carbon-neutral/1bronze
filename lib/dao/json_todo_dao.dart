@@ -34,6 +34,16 @@ class JsonTodoDao implements TodoDao {
   }
 
   @override
+  Future<List<Todo>> updateWork(int id, String work) async {
+    final prefs = await getPrefs();
+    final todolist = await getTodolist();
+    Todo todo = todolist.where((todo) => todo.id==id).first;
+    todo.updateWork(work);
+    await prefs.setString('todo_list', json.encode(todolist));
+    return todolist;
+  }
+
+  @override
   Future<List<Todo>> updateIsCompleted(int id) async {
     final prefs = await getPrefs();
     final todolist = await getTodolist();

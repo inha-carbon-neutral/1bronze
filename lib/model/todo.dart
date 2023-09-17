@@ -26,6 +26,10 @@ class Todo {
     };
   }
 
+  void updateWork(String work) {
+    this.work = work;
+  }
+
   void updateIsCompleted() {
     isCompleted = !isCompleted;
   }
