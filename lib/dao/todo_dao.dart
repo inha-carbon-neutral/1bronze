@@ -4,4 +4,5 @@ class TodoDao {
   createTodo(String work){}
   updateIsCompleted(int id){}
   updateIsImportant(int id){}
+  deleteTodo(int id){}
 }

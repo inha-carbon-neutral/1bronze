@@ -28,6 +28,11 @@ class TodoService {
     return _getFilteredTodolist(tag, todolist);
   }
 
+  Future<List<Todo>> deleteTodo(Tag tag, int id) async {
+    final todolist = await todoDao.deleteTodo(id);
+    return _getFilteredTodolist(tag, todolist);
+  }
+
   List<Todo> _getFilteredTodolist(Tag tag, List<Todo> todolist) {
     return todolist.where((todo) => _checkTagAndTodoStatus(tag, todo)).toList();
   }

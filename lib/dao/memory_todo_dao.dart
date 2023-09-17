@@ -11,7 +11,7 @@ class MemoryTodoDao implements TodoDao {
   MemoryTodoDao._internal();
 
   int id = 0;
-  final List<Todo> todolist = [];
+  List<Todo> todolist = [];
 
   @override
   List<Todo> getTodolist() {
@@ -35,6 +35,12 @@ class MemoryTodoDao implements TodoDao {
   List<Todo> updateIsImportant(int id){
     Todo todo = todolist.where((todo) => todo.id==id).first;
     todo.updateIsImportant();
+    return todolist;
+  }
+
+  @override
+  List<Todo> deleteTodo(int id){
+    todolist = todolist.where((todo) => todo.id != id).toList();
     return todolist;
   }
 }

@@ -44,7 +44,7 @@ class TodoWidget extends StatelessWidget {
               ),
               SlidableAction(
                 flex: 2,
-                onPressed: (context) {},
+                onPressed: (context) { _deleteTodo(todoProvider, id); },
                 backgroundColor: const Color(0xFFF4493D),
                 foregroundColor: Theme.of(context).primaryColor,
                 icon: Icons.delete_rounded,
@@ -124,5 +124,9 @@ class TodoWidget extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  void _deleteTodo(TodoProvider todoProvider, int id) {
+    todoProvider.deleteTodo(id);
   }
 }

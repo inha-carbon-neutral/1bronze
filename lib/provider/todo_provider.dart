@@ -46,4 +46,9 @@ class TodoProvider extends ChangeNotifier {
     filteredTodolist = await todoService.createTodo(selectedTag, work);
     notifyListeners();
   }
+
+  void deleteTodo(int id) async {
+    filteredTodolist = await todoService.deleteTodo(selectedTag, id);
+    notifyListeners();
+  }
 }
